@@ -15,14 +15,23 @@ import com.marketagracova.weatherapp.ui.navigation.NavGraph
 import com.marketagracova.weatherapp.ui.theme.WeatherAppTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
+import com.marketagracova.weatherapp.data.WeatherDatabase
+import com.marketagracova.weatherapp.data.FavoriteCityRepository
+import com.marketagracova.weatherapp.viewmodel.WeatherViewModelFactory
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // create a database and repository
+        val database = WeatherDatabase.getDatabase(applicationContext)
+        val repository = FavoriteCityRepository(database.favoriteCityDao())
+        val factory = WeatherViewModelFactory(repository)
+
         setContent {
             WeatherAppTheme {
+                val weatherViewModel: WeatherViewModel = viewModel(factory = factory)
                 val navController = rememberNavController()
-                val weatherViewModel: WeatherViewModel = viewModel()
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 var showSearchDialog by remember { mutableStateOf(false) }

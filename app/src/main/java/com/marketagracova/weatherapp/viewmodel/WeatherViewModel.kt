@@ -11,9 +11,16 @@ import android.util.Log
 import com.marketagracova.weatherapp.data.ForecastResponse
 import com.marketagracova.weatherapp.data.GeoLocation
 import com.marketagracova.weatherapp.data.DayForecast
+import com.marketagracova.weatherapp.data.FavoriteCity
+import com.marketagracova.weatherapp.data.FavoriteCityRepository
+import kotlinx.coroutines.flow.Flow
 
 
-class WeatherViewModel : ViewModel() {
+class WeatherViewModel (
+    private val repository: FavoriteCityRepository? = null
+) : ViewModel(
+
+) {
     private val _weather = MutableLiveData<WeatherResponse>()
     val weather: LiveData<WeatherResponse> = _weather
 
@@ -31,6 +38,8 @@ class WeatherViewModel : ViewModel() {
 
     private val _dailyForecast = MutableLiveData<List<DayForecast>>()
     val dailyForecast: LiveData<List<DayForecast>> = _dailyForecast
+
+    val allFavorites: Flow<List<FavoriteCity>>? = repository?.allFavorites
 
     fun fetchWeather(city: String, apiKey: String) {
         viewModelScope.launch {
@@ -83,5 +92,27 @@ class WeatherViewModel : ViewModel() {
                 _searchResults.value = emptyList()
             }
         }
+    }
+
+    fun addToFavorites(cityName: String, country: String, lat: Double, lon: Double) {
+        viewModelScope.launch {
+            val favorite = FavoriteCity(
+                cityName = cityName,
+                country = country,
+                lat = lat,
+                lon = lon
+            )
+            repository?.addFavorite(favorite)
+        }
+    }
+
+    fun removeFromFavorites(city: FavoriteCity) {
+        viewModelScope.launch {
+            repository?.removeFavorite(city)
+        }
+    }
+
+    suspend fun isFavorite(cityName: String): Boolean {
+        return repository?.isFavorite(cityName) ?: false
     }
 }
