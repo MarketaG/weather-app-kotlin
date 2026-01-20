@@ -7,11 +7,13 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
+import androidx.compose.material.icons.filled.Search
 
 @Composable
 fun BottomNavBar(
     currentRoute: String?,
-    navController: NavController
+    navController: NavController,
+    onSearchClick: () -> Unit
 ) {
     NavigationBar {
         NavigationBarItem(
@@ -19,6 +21,13 @@ fun BottomNavBar(
             label = { Text("Home") },
             selected = currentRoute == Screen.Home.route,
             onClick = { navController.navigate(Screen.Home.route) }
+        )
+
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+            label = { Text("Search") },
+            selected = false,
+            onClick = onSearchClick
         )
 
         NavigationBarItem(

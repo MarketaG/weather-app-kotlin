@@ -2,6 +2,7 @@ package com.marketagracova.weatherapp.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -11,21 +12,37 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.marketagracova.weatherapp.BuildConfig
 import com.marketagracova.weatherapp.ui.components.*
 import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 
 @Composable
-fun HomeScreen() {
-    val viewModel: WeatherViewModel = viewModel()
-    val weather by viewModel.weather.observeAsState()
-    val forecast by viewModel.forecast.observeAsState()
+fun HomeScreen(weatherViewModel: WeatherViewModel = viewModel()) {
+    val weather by weatherViewModel.weather.observeAsState()
+    val forecast by weatherViewModel.forecast.observeAsState()
+    val currentCity by weatherViewModel.currentCity.observeAsState("Prague")
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchWeather("Prague", BuildConfig.API_KEY)
-        viewModel.fetchForecast("Prague", BuildConfig.API_KEY)
+    val errorMessage by weatherViewModel.errorMessage.observeAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            snackbarHostState.showSnackbar(it)
+            weatherViewModel.clearError()
+        }
     }
 
+    LaunchedEffect(currentCity) {
+        weatherViewModel.fetchWeather(currentCity, BuildConfig.API_KEY)
+        weatherViewModel.fetchForecast(currentCity, BuildConfig.API_KEY)
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { paddingValues ->
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(paddingValues)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -56,4 +73,5 @@ fun HomeScreen() {
             CircularProgressIndicator()
         }
     }
+}
 }

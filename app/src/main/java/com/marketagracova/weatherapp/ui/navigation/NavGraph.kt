@@ -7,15 +7,19 @@ import androidx.navigation.compose.composable
 import com.marketagracova.weatherapp.ui.screens.FavoritesScreen
 import com.marketagracova.weatherapp.ui.screens.ForecastScreen
 import com.marketagracova.weatherapp.ui.screens.HomeScreen
+import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
 
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(
+    navController: NavHostController,
+    weatherViewModel: WeatherViewModel
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(Screen.Home.route) {
-            HomeScreen()
+            HomeScreen(weatherViewModel = weatherViewModel)
         }
 
         composable(Screen.Forecast.route) {
