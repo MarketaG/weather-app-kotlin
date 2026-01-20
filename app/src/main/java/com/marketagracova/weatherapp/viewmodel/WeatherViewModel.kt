@@ -14,6 +14,7 @@ import com.marketagracova.weatherapp.data.DayForecast
 import com.marketagracova.weatherapp.data.FavoriteCity
 import com.marketagracova.weatherapp.data.FavoriteCityRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 
 
 class WeatherViewModel (
@@ -109,6 +110,14 @@ class WeatherViewModel (
     fun removeFromFavorites(city: FavoriteCity) {
         viewModelScope.launch {
             repository?.removeFavorite(city)
+        }
+    }
+
+    fun removeFromFavoritesByName(cityName: String) {
+        viewModelScope.launch {
+            val favorites = allFavorites?.first() ?: emptyList()
+            val city = favorites.find { it.cityName == cityName }
+            city?.let { removeFromFavorites(it) }
         }
     }
 

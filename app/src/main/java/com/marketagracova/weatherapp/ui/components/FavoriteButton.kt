@@ -30,7 +30,7 @@ fun FavoriteButton(
             weather?.let { data ->
                 scope.launch {
                     if (isFavorite) {
-                        // TODO: remove from favorites - need to find the FavoriteCity object
+                        weatherViewModel.removeFromFavoritesByName(currentCity)
                         isFavorite = false
                     } else {
                         weatherViewModel.addToFavorites(
