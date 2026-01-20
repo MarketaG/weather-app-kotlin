@@ -18,14 +18,21 @@ import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
 import coil.compose.AsyncImage
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import com.marketagracova.weatherapp.data.ForecastItem
+
 
 @Composable
 fun HomeScreen() {
     val viewModel: WeatherViewModel = viewModel()
     val weather by viewModel.weather.observeAsState()
+    val forecast by viewModel.forecast.observeAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchWeather("Prague", BuildConfig.API_KEY)
+        viewModel.fetchForecast("Prague", BuildConfig.API_KEY)
+
     }
 
     Column(
@@ -115,6 +122,28 @@ fun HomeScreen() {
         } ?: run {
             CircularProgressIndicator()
         }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Forecast seznam
+        forecast?.let { forecastData ->
+            Text(
+                text = "Hourly Forecast",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(forecastData.list.take(8)) { item ->
+                    ForecastCard(item)
+                }
+            }
+        }
     }
 }
 
@@ -135,4 +164,41 @@ fun formatTime(timestamp: Long): String {
 fun getCurrentDate(): String {
     val format = SimpleDateFormat("EEEE, MMM d", Locale.getDefault())
     return format.format(Date())
+}
+
+@Composable
+fun ForecastCard(item: ForecastItem) {
+    Card(
+        modifier = Modifier
+            .width(100.dp)
+            .padding(4.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = formatForecastTime(item.dt),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Medium
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            AsyncImage(
+                model = "https://openweathermap.org/img/wn/${item.weather[0].icon}.png",
+                contentDescription = null,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = "${item.main.temp.toInt()}°",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
+
+fun formatForecastTime(timestamp: Long): String {
+    val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+    return format.format(Date(timestamp * 1000))
 }
