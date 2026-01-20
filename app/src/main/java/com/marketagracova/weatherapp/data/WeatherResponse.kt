@@ -26,5 +26,6 @@ data class Wind(
 
 data class Sys(
     val sunrise: Long,  // Unix timestamp
-    val sunset: Long    // Unix timestamp
+    val sunset: Long,    // Unix timestamp
+    val country: String? = null
 )

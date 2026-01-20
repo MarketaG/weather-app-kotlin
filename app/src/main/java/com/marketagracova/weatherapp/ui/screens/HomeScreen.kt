@@ -14,7 +14,12 @@ import com.marketagracova.weatherapp.ui.components.*
 import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import com.marketagracova.weatherapp.ui.components.FavoriteButton
+import androidx.compose.material3.Text
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(weatherViewModel: WeatherViewModel = viewModel()) {
     val weather by weatherViewModel.weather.observeAsState()
@@ -37,6 +42,18 @@ fun HomeScreen(weatherViewModel: WeatherViewModel = viewModel()) {
     }
 
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Weather") },
+                actions = {
+                    FavoriteButton(
+                        weather = weather,
+                        currentCity = currentCity,
+                        weatherViewModel = weatherViewModel
+                    )
+                }
+            )
+        },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
     Column(

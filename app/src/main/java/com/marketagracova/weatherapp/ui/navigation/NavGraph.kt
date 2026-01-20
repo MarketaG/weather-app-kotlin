@@ -27,7 +27,10 @@ fun NavGraph(
         }
 
         composable(Screen.Favorites.route) {
-            FavoritesScreen()
+            FavoritesScreen(
+                weatherViewModel = weatherViewModel,
+                navController = navController
+            )
         }
     }
 }
