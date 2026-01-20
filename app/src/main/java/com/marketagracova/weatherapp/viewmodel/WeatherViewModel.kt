@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import android.util.Log
 import com.marketagracova.weatherapp.data.ForecastResponse
 import com.marketagracova.weatherapp.data.GeoLocation
+import com.marketagracova.weatherapp.data.DayForecast
 
 
 class WeatherViewModel : ViewModel() {
@@ -27,6 +28,9 @@ class WeatherViewModel : ViewModel() {
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
+
+    private val _dailyForecast = MutableLiveData<List<DayForecast>>()
+    val dailyForecast: LiveData<List<DayForecast>> = _dailyForecast
 
     fun fetchWeather(city: String, apiKey: String) {
         viewModelScope.launch {
@@ -56,6 +60,7 @@ class WeatherViewModel : ViewModel() {
             try {
                 val response = RetrofitInstance.api.getForecast(city, apiKey)
                 _forecast.value = response
+                _dailyForecast.value = ForecastProcessor.processForecast(response.list)
                 _currentCity.value = city
             } catch (e: Exception) {
                 Log.e("WeatherViewModel", "Forecast error: ${e.message}", e)

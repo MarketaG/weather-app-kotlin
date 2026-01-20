@@ -23,7 +23,7 @@ fun NavGraph(
         }
 
         composable(Screen.Forecast.route) {
-            ForecastScreen()
+            ForecastScreen(weatherViewModel = weatherViewModel)
         }
 
         composable(Screen.Favorites.route) {
