@@ -20,6 +20,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import com.marketagracova.weatherapp.ui.components.FavoriteButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.ui.graphics.Color
+import com.marketagracova.weatherapp.ui.components.AppLogo
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,14 +50,17 @@ fun HomeScreen(weatherViewModel: WeatherViewModel = viewModel()) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Weather") },
+                title = { AppLogo() },
                 actions = {
                     FavoriteButton(
                         weather = weather,
                         currentCity = currentCity,
                         weatherViewModel = weatherViewModel
                     )
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent
+                )
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
