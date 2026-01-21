@@ -19,10 +19,14 @@ import com.marketagracova.weatherapp.data.WeatherDatabase
 import com.marketagracova.weatherapp.data.FavoriteCityRepository
 import com.marketagracova.weatherapp.viewmodel.WeatherViewModelFactory
 import com.marketagracova.weatherapp.data.SearchHistoryManager
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // install splash screen
+        installSplashScreen()
 
         // create a database and repository
         val database = WeatherDatabase.getDatabase(applicationContext)
