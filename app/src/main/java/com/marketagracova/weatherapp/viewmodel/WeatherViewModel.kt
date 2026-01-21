@@ -78,6 +78,34 @@ class WeatherViewModel (
         }
     }
 
+    // fetch weather using current location coordinates
+    fun fetchWeatherByLocation(lat: Double, lon: Double, apiKey: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitInstance.api.getWeatherByCoords(lat, lon, apiKey)
+                _weather.value = response
+                _currentCity.value = response.name
+                _errorMessage.value = null
+            } catch (e: Exception) {
+                Log.e("WeatherViewModel", "Location weather error: ${e.message}", e)
+                _errorMessage.value = "Unable to load weather for your location"
+            }
+        }
+    }
+
+    // fetch forecast using current location coordinates
+    fun fetchForecastByLocation(lat: Double, lon: Double, apiKey: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitInstance.api.getForecastByCoords(lat, lon, apiKey)
+                _forecast.value = response
+                _dailyForecast.value = ForecastProcessor.processForecast(response.list)
+            } catch (e: Exception) {
+                Log.e("WeatherViewModel", "Location forecast error: ${e.message}", e)
+            }
+        }
+    }
+
     fun searchCities(query: String, apiKey: String) {
         if (query.length < 2) {
             _searchResults.value = emptyList()
