@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 @Composable
 fun SearchDialog(
     searchResults: List<GeoLocation>,
+    searchHistory: List<Pair<String, String>>,
     onSearch: (String) -> Unit,
     onCitySelected: (GeoLocation) -> Unit,
     onCurrentLocationClick: () -> Unit,
@@ -52,8 +53,9 @@ fun SearchDialog(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // current Location -  display only when query is empty
+                // display when query is empty
                 if (searchQuery.isEmpty()) {
+                    // current Location
                     Text(
                         text = "Search by Location",
                         style = MaterialTheme.typography.labelMedium,
@@ -84,6 +86,44 @@ fun SearchDialog(
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
+
+                    // last Searched
+                    if (searchHistory.isNotEmpty()) {
+                        Text(
+                            text = "Last Searched",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(bottom = 8.dp)
+                        )
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            searchHistory.forEach { (city, country) ->
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            onCitySelected(
+                                                GeoLocation(
+                                                    name = city,
+                                                    country = country,
+                                                    state = null,
+                                                    lat = 0.0,
+                                                    lon = 0.0
+                                                )
+                                            )
+                                        }
+                                ) {
+                                    Text(
+                                        text = "$city, $country",
+                                        modifier = Modifier.padding(16.dp),
+                                        style = MaterialTheme.typography.bodyLarge
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // search Results

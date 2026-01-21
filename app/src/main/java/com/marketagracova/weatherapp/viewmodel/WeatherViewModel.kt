@@ -15,10 +15,11 @@ import com.marketagracova.weatherapp.data.FavoriteCity
 import com.marketagracova.weatherapp.data.FavoriteCityRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-
+import com.marketagracova.weatherapp.data.SearchHistoryManager
 
 class WeatherViewModel (
-    private val repository: FavoriteCityRepository? = null
+    private val repository: FavoriteCityRepository? = null,
+    private val searchHistoryManager: SearchHistoryManager? = null
 ) : ViewModel(
 
 ) {
@@ -121,6 +122,14 @@ class WeatherViewModel (
                 _searchResults.value = emptyList()
             }
         }
+    }
+
+    fun addSearchToHistory(cityName: String, country: String) {
+        searchHistoryManager?.addToHistory(cityName, country)
+    }
+
+    fun getSearchHistory(): List<Pair<String, String>> {
+        return searchHistoryManager?.getHistory() ?: emptyList()
     }
 
     fun addToFavorites(cityName: String, country: String, lat: Double, lon: Double) {

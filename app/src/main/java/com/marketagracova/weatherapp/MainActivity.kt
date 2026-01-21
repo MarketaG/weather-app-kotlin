@@ -18,6 +18,7 @@ import com.marketagracova.weatherapp.viewmodel.WeatherViewModel
 import com.marketagracova.weatherapp.data.WeatherDatabase
 import com.marketagracova.weatherapp.data.FavoriteCityRepository
 import com.marketagracova.weatherapp.viewmodel.WeatherViewModelFactory
+import com.marketagracova.weatherapp.data.SearchHistoryManager
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,8 @@ class MainActivity : ComponentActivity() {
         // create a database and repository
         val database = WeatherDatabase.getDatabase(applicationContext)
         val repository = FavoriteCityRepository(database.favoriteCityDao())
-        val factory = WeatherViewModelFactory(repository)
+        val searchHistoryManager = SearchHistoryManager(applicationContext)
+        val factory = WeatherViewModelFactory(repository, searchHistoryManager)
 
         setContent {
             WeatherAppTheme {

@@ -20,6 +20,7 @@ fun SearchDialogWrapper(
     weatherViewModel: WeatherViewModel
 ) {
     val searchResults by weatherViewModel.searchResults.observeAsState(emptyList())
+    val searchHistory = remember { weatherViewModel.getSearchHistory() }
     val context = LocalContext.current
     val locationProvider = remember { LocationProvider(context) }
     val scope = rememberCoroutineScope()
@@ -46,16 +47,18 @@ fun SearchDialogWrapper(
 
     SearchDialog(
         searchResults = searchResults,
+        searchHistory = searchHistory,
         onSearch = { query ->
             weatherViewModel.searchCities(query, BuildConfig.API_KEY)
         },
         onCitySelected = { city ->
+            weatherViewModel.addSearchToHistory(city.name, city.country)
             weatherViewModel.setCity(city.name)
             navController.navigate(Screen.Home.route)
             onDismiss()
         },
         onCurrentLocationClick = {
-            // Request permissions
+            // request permissions
             permissionLauncher.launch(
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
