@@ -42,33 +42,38 @@ fun ForecastCard(item: ForecastItem) {
     Card(
         modifier = Modifier
             .width(100.dp)
-            .padding(4.dp)
+            .height(170.dp)
     ) {
         Column(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = formatForecastTime(item.dt),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             AsyncImage(
                 model = "https://openweathermap.org/img/wn/${item.weather[0].icon}.png",
                 contentDescription = null,
-                modifier = Modifier.size(40.dp)
+                modifier = Modifier.size(48.dp)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+
+            Spacer(modifier = Modifier.height(12.dp))
+
             Text(
                 text = "${item.main.temp.toInt()}°",
-                fontSize = 18.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         }
     }
 }
-
 fun formatForecastTime(timestamp: Long): String {
     val format = SimpleDateFormat("HH:mm", Locale.getDefault())
     return format.format(Date(timestamp * 1000))

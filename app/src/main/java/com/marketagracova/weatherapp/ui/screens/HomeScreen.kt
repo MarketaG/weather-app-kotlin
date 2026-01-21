@@ -1,6 +1,8 @@
 package com.marketagracova.weatherapp.ui.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
@@ -59,6 +61,7 @@ fun HomeScreen(weatherViewModel: WeatherViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
             .padding(paddingValues)
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
