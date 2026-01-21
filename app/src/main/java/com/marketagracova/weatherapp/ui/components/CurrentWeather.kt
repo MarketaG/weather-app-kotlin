@@ -17,7 +17,7 @@ fun CurrentWeather(temp: Double, weather: List<Weather>) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         // weather icon
         AsyncImage(
-            model = "https://openweathermap.org/img/wn/${weather[0].icon}@2x.png",
+            model = "https://openweathermap.org/img/wn/${weather[0].icon}@4x.png",
             contentDescription = "Weather icon",
             modifier = Modifier.size(160.dp)
         )
