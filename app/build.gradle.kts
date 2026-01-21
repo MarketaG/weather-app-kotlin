@@ -13,6 +13,11 @@ android {
         buildConfig = true
     }
 
+    val weatherApiKey: String =
+        (project.findProperty("WEATHER_API_KEY") as String?)
+            ?: System.getenv("WEATHER_API_KEY")
+            ?: "DUMMY_KEY"
+
     defaultConfig {
         applicationId = "com.marketagracova.weatherapp"
         minSdk = 26
@@ -20,8 +25,11 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        buildConfigField("String", "API_KEY", "\"${project.property("WEATHER_API_KEY")}\"")
-
+        buildConfigField(
+            "String",
+            "API_KEY",
+            "\"$weatherApiKey\""
+        )
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
