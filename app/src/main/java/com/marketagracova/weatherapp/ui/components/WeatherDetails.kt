@@ -43,7 +43,7 @@ fun WeatherDetails(
 @Composable
 fun WeatherDetailItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = label, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSecondary)
         Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.Medium)
     }
 }

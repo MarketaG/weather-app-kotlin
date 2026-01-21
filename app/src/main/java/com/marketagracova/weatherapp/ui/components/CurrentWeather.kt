@@ -1,6 +1,7 @@
 package com.marketagracova.weatherapp.ui.components
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,21 +19,23 @@ fun CurrentWeather(temp: Double, weather: List<Weather>) {
         AsyncImage(
             model = "https://openweathermap.org/img/wn/${weather[0].icon}@2x.png",
             contentDescription = "Weather icon",
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(160.dp)
         )
 
         // temperature
         Text(
             text = "${temp.toInt()}°",
-            fontSize = 72.sp,
+            fontSize = 64.sp,
             fontWeight = FontWeight.Bold
         )
 
         // description
         Text(
             text = weather[0].main,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Light
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Light,
+            color = MaterialTheme.colorScheme.onSecondary
+
         )
     }
 }

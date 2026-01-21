@@ -2,9 +2,9 @@ package com.marketagracova.weatherapp.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,13 +23,13 @@ fun WeatherHeader(cityName: String) {
             Icon(
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(28.dp)
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = cityName,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Light
+                fontSize = 26.sp,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -37,16 +37,13 @@ fun WeatherHeader(cityName: String) {
 
         // date with icon
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Default.DateRange,
-                contentDescription = "Date",
-                modifier = Modifier.size(16.dp)
-            )
+
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = getCurrentDate(),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Light
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Light,
+                color = MaterialTheme.colorScheme.onSecondary
             )
         }
     }

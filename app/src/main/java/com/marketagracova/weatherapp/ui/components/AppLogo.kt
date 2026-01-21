@@ -13,6 +13,6 @@ fun AppLogo(modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = R.drawable.app_logo),
         contentDescription = "Weather App Logo",
-        modifier = modifier.height(72.dp)
+        modifier = modifier.height(80.dp)
     )
 }

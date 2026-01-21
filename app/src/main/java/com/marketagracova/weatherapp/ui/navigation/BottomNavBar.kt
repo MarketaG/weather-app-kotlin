@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.graphics.Color
 
 @Composable
 fun BottomNavBar(
@@ -15,33 +16,41 @@ fun BottomNavBar(
     navController: NavController,
     onSearchClick: () -> Unit
 ) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surface
+    ) {
+        val itemColors = NavigationBarItemDefaults.colors(
+            selectedIconColor = Color.White,
+            indicatorColor = MaterialTheme.colorScheme.secondary,
+            unselectedIconColor = MaterialTheme.colorScheme.onSecondary
+        )
+
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-            label = { Text("Home") },
             selected = currentRoute == Screen.Home.route,
-            onClick = { navController.navigate(Screen.Home.route) }
+            onClick = { navController.navigate(Screen.Home.route) },
+            colors = itemColors
         )
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.Search, contentDescription = "Search") },
-            label = { Text("Search") },
             selected = false,
-            onClick = onSearchClick
+            onClick = onSearchClick,
+            colors = itemColors
         )
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.DateRange, contentDescription = "Forecast") },
-            label = { Text("Forecast") },
             selected = currentRoute == Screen.Forecast.route,
-            onClick = { navController.navigate(Screen.Forecast.route) }
+            onClick = { navController.navigate(Screen.Forecast.route) },
+            colors = itemColors
         )
 
         NavigationBarItem(
             icon = { Icon(Icons.Default.Favorite, contentDescription = "Favorites") },
-            label = { Text("Favorites") },
             selected = currentRoute == Screen.Favorites.route,
-            onClick = { navController.navigate(Screen.Favorites.route) }
+            onClick = { navController.navigate(Screen.Favorites.route) },
+            colors = itemColors
         )
     }
 }
